@@ -1,8 +1,10 @@
 package com.example.android_mp4_download
 
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.VideoView
 
 import java.io.File
 import java.io.FileOutputStream
@@ -19,6 +21,22 @@ class MainActivity : AppCompatActivity() {
         val fileName = "video.mp4"
 
         downloadVideoFromUrl(videoUrl, fileName)
+
+
+        val videoView = findViewById<VideoView>(R.id.videoView)
+
+        val videoPath = getVideoFilePath() // 動画ファイルのパスを取得する関数を呼び出す
+
+        val videoUri = Uri.parse(videoPath)
+        println("videoUriのURL$videoUri")
+        videoView.setVideoURI(videoUri)
+        videoView.start()
+    }
+
+    // 動画再生
+    private fun getVideoFilePath(): String {
+        // 動画ファイルのパスを返す関数。保存先のディレクトリやファイル名に注意して実装する
+        return filesDir.absolutePath + "/video.mp4"
     }
 
     private fun downloadVideoFromUrl(url: String, fileName: String) {
@@ -37,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
                 outputStream.close()
                 inputStream.close()
+
 
                 runOnUiThread {
                     println("動画をダウンロードしました")
